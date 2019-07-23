@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longfor.gf.lc.account.dao.AccountMapper">
+
+    <select id="selectZeroJlAccNoByPersonAd" resultType="com.longfor.gf.lc.account.dto.ZeroAccountDto">
+        select
+            acc_no accNo, person_ad code
+        from t_zero_jl_account
+        where person_ad = #{personAd}
+    </select>
+
+    <select id="selectZeroCpAccNoByCpCode" resultType="com.longfor.gf.lc.account.dto.ZeroAccountDto">
+        select
+            acc_no accNo, cp_code code
+        from t_zero_cp_account
+        where cp_code = #{cpCode}
+    </select>
+
+    <select id="selectZeroQtAccNoByQtCode" resultType="com.longfor.gf.lc.account.dto.ZeroAccountDto">
+        select
+            acc_no accNo, qt_code code
+        from t_zero_qt_account
+        where qt_code = #{qtCode}
+    </select>
+
+    <select id="selectCpAccByAccNo" resultType="com.longfor.gf.lc.account.dto.AccountDto">
+        select
+            acc_no accNo, balance_amt balanceAmt, frozen_amt frozenAmt, cp_code cpCode
+        from t_cp_account
+        where status = 1 and is_delete = 0 and acc_no = #{accNo}
+    </select>
+
+    <select id="selectGrAccByAccNo" resultType="com.longfor.gf.lc.account.dto.AccountDto">
+        select
+            acc_no accNo, balance_amt balanceAmt, frozen_amt frozenAmt, person_ad personAd
+        from t_gr_account
+        where status = 1 and is_delete = 0 and acc_no = #{accNo}
+    </select>
+
+    <select id="selectJlAccByAccNo" resultType="com.longfor.gf.lc.account.dto.AccountDto">
+        select
+            acc_no accNo, balance_amt balanceAmt, frozen_amt frozenAmt, person_ad personAd
+        from t_jl_account
+        where status = 1 and is_delete = 0 and acc_no = #{accNo}
+    </select>
+
+    <select id="selectQtAccByAccNo" resultType="com.longfor.gf.lc.account.dto.AccountDto">
+        select
+            acc_no accNo, balance_amt balanceAmt, frozen_amt frozenAmt, qt_code qtCode
+        from t_qt_account
+        where status = 1 and is_delete = 0 and acc_no = #{accNo}
+    </select>
+
+    <update id="incrAccBalance">
+		update ${tableName}
+		set
+			balance_amt = balance_amt + #{changeAmount,jdbcType=DECIMAL}
+		where acc_no = #{accNo}
+    </update>
+    <update id="decrAccBalance">
+		update ${tableName}
+		set
+			balance_amt = balance_amt - #{changeAmount,jdbcType=DECIMAL}
+		where acc_no = #{accNo}
+    </update>
+
+
+</mapper>

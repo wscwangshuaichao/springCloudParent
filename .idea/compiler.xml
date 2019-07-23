@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="service-feign" />
+        <module name="eureka-server" />
+        <module name="service-hi" />
+        <module name="service-ribbon" />
+      </profile>
+      <profile name="Annotation profile for cloud-parent" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="D:/part1-work/mavenRepository/org/mapstruct/mapstruct-processor/1.2.0.Final/mapstruct-processor-1.2.0.Final.jar" />
+          <entry name="D:/part1-work/mavenRepository/com/jolira/hickory/1.0.0/hickory-1.0.0.jar" />
+          <entry name="D:/part1-work/mavenRepository/org/mapstruct/mapstruct/1.2.0.Final/mapstruct-1.2.0.Final.jar" />
+          <entry name="D:/part1-work/mavenRepository/junit/junit/4.12/junit-4.12.jar" />
+          <entry name="D:/part1-work/mavenRepository/org/assertj/assertj-core/3.7.0/assertj-core-3.7.0.jar" />
+          <entry name="D:/part1-work/mavenRepository/com/google/guava/guava/19.0/guava-19.0.jar" />
+          <entry name="D:/part1-work/mavenRepository/com/puppycrawl/tools/checkstyle/7.2/checkstyle-7.2.jar" />
+          <entry name="D:/part1-work/mavenRepository/javax/inject/javax.inject/1/javax.inject-1.jar" />
+          <entry name="D:/part1-work/mavenRepository/org/codehaus/plexus/plexus-container-default/1.6/plexus-container-default-1.6.jar" />
+          <entry name="D:/part1-work/mavenRepository/org/springframework/spring-test/4.0.3.RELEASE/spring-test-4.0.3.RELEASE.jar" />
+          <entry name="D:/part1-work/mavenRepository/org/springframework/spring-beans/4.0.3.RELEASE/spring-beans-4.0.3.RELEASE.jar" />
+          <entry name="D:/part1-work/mavenRepository/org/springframework/spring-context/4.0.3.RELEASE/spring-context-4.0.3.RELEASE.jar" />
+          <entry name="D:/part1-work/mavenRepository/joda-time/joda-time/2.9/joda-time-2.9.jar" />
+          <entry name="D:/part1-work/mavenRepository/org/projectlombok/lombok/1.18.2/lombok-1.18.2.jar" />
+        </processorPath>
+        <module name="gf-lc-account" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="serice-feign" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="eureka-server" options="-parameters" />
+      <module name="gf-lc-account" options="-Xlint:deprecation -Xlint:unchecked" />
+      <module name="serice-feign" options="-parameters" />
+      <module name="service-feign" options="-parameters" />
+      <module name="service-hi" options="-parameters" />
+      <module name="service-ribbon" options="-parameters" />
+    </option>
+  </component>
+</project>

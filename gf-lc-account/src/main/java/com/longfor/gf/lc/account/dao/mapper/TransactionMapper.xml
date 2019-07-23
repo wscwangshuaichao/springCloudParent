@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longfor.gf.lc.account.dao.TransactionMapper">
+	<resultMap id="BaseResultMap" type="com.longfor.gf.lc.account.dao.entity.Transaction">
+		<id column="key_id" jdbcType="INTEGER" property="keyId" />
+		<result column="batch_no" jdbcType="VARCHAR" property="batchNo" />
+		<result column="trans_no" jdbcType="VARCHAR" property="transNo" />
+		<result column="acc_out" jdbcType="VARCHAR" property="accOut" />
+		<result column="acc_out_amt" jdbcType="DECIMAL" property="accOutAmt" />
+		<result column="acc_in" jdbcType="VARCHAR" property="accIn" />
+		<result column="acc_in_amt" jdbcType="DECIMAL" property="accInAmt" />
+		<result column="business_type" jdbcType="VARCHAR" property="businessType" />
+		<result column="trans_type" jdbcType="VARCHAR" property="transType" />
+		<result column="yyyy" jdbcType="SMALLINT" property="yyyy" />
+		<result column="mm" jdbcType="SMALLINT" property="mm" />
+		<result column="dd" jdbcType="SMALLINT" property="dd" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="remarks" jdbcType="VARCHAR" property="remarks" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user" jdbcType="VARCHAR" property="createUser" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		<result column="modify_user" jdbcType="VARCHAR" property="modifyUser" />
+	</resultMap>
+
+	<resultMap id="TransDtoResultMap" extends="BaseResultMap" type="com.longfor.gf.lc.account.dto.TransactionDto">
+		<result column="transWay" jdbcType="VARCHAR" property="transWay" />
+	</resultMap>
+
+	<resultMap id="AccTransactionDtoResultMap" type="com.longfor.gf.lc.account.dto.AccTransactionDto">
+		<result column="batch_no" jdbcType="VARCHAR" property="batchNo" />
+		<result column="trans_no" jdbcType="VARCHAR" property="transNo" />
+		<result column="acc_out" jdbcType="VARCHAR" property="accOut" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="acc_in" jdbcType="VARCHAR" property="accIn" />
+		<result column="business_type" jdbcType="VARCHAR" property="businessType" />
+		<result column="trans_type" jdbcType="VARCHAR" property="transType" />
+		<result column="yyyy" jdbcType="SMALLINT" property="yyyy" />
+		<result column="mm" jdbcType="SMALLINT" property="mm" />
+		<result column="dd" jdbcType="SMALLINT" property="dd" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="remarks" jdbcType="VARCHAR" property="remarks" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="transWay" jdbcType="VARCHAR" property="transWay" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+		key_id, batch_no, trans_no, acc_out, acc_out_amt, acc_in, acc_in_amt, business_type,trans_type,
+		yyyy, mm, dd, status, remarks, create_time, create_user, modify_time, modify_user
+	</sql>
+	<!-- 根据条件查询分页数据 -->
+	<select id="queryPage" resultMap="TransDtoResultMap" parameterType="com.longfor.gf.lc.account.dao.entity.example.TransactionQuery">
+		select
+		<include refid="Base_Column_List" />,
+        (case when acc_out = #{accNo} and acc_in != #{accNo} then '2'
+        when acc_out = #{accNo} and acc_in = #{accNo} and (business_type = '101001' or business_type = '101000')then '2'
+        when acc_out = #{accNo} and acc_in = #{accNo} and (business_type = '102000' or business_type = '101003')then '1'
+        when acc_out != #{accNo} and acc_in = #{accNo} then '1' end) transWay
+        from t_transaction
+		<where>
+			<choose>
+				<when test="transWay == null or (transWay != null and transWay == 0)">
+					(acc_out = #{accNo} or acc_in = #{accNo})
+				</when>
+				<when test="transWay != null and transWay == 1">
+					acc_in = #{accNo}
+                    and (acc_out != #{accNo} or business_type = '102000' or business_type = '101003')
+				</when>
+				<when test="transWay != null and transWay == 2">
+					acc_out = #{accNo}
+                    and (acc_in != #{accNo} or business_type = '101001' or business_type = '101000')
+				</when>
+			</choose>
+			<if test="businessType != null and businessType != ''">
+				and business_type = #{businessType}
+			</if>
+			<if test="transType != null and transType != ''">
+				and trans_type = #{transType}
+			</if>
+			<if test="batchNo != null and batchNo != ''">
+				and batch_no = #{batchNo}
+			</if>
+			<if test="transNo != null and transNo != ''">
+				and trans_no = #{transNo}
+			</if>
+			<if test="startDate != null and startDate != ''">
+				and DATE_FORMAT(create_time, '%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and DATE_FORMAT(create_time, '%Y-%m-%d') <![CDATA[ <= ]]> DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="yyyy != null">
+				and yyyy = #{yyyy}
+			</if>
+			<if test="mm != null and mm != ''">
+				and mm = #{mm}
+			</if>
+			<if test="dd != null">
+				and dd = #{dd}
+			</if>
+			<if test="accOuts != null and accOuts.size() > 0">
+				and acc_out
+				<foreach collection="accOuts" item="item" open="in (" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+		order by create_time desc
+	</select>
+	<!-- 查询分页总数 -->
+	<select id="queryPageCount" resultType="long" parameterType="com.longfor.gf.lc.account.dao.entity.example.TransactionQuery">
+		select
+		count(1) total
+		from t_transaction
+		<where>
+			<choose>
+				<when test="transWay == null or (transWay != null and transWay == 0)">
+					(acc_out = #{accNo} or acc_in = #{accNo})
+				</when>
+                <when test="transWay != null and transWay == 1">
+                    acc_in = #{accNo}
+                    and (acc_out != #{accNo} or business_type = '102000' or business_type = '101003')
+                </when>
+                <when test="transWay != null and transWay == 2">
+                    acc_out = #{accNo}
+                    and (acc_in != #{accNo} or business_type = '101001' or business_type = '101000')
+                </when>
+			</choose>
+			<if test="businessType != null and businessType != ''">
+				and business_type = #{businessType}
+			</if>
+			<if test="transType != null and transType != ''">
+				and trans_type = #{transType}
+			</if>
+			<if test="batchNo != null and batchNo != ''">
+				and batch_no = #{batchNo}
+			</if>
+			<if test="transNo != null and transNo != ''">
+				and trans_no = #{transNo}
+			</if>
+			<if test="startDate != null and startDate != ''">
+				and DATE_FORMAT(create_time, '%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and DATE_FORMAT(create_time, '%Y-%m-%d') <![CDATA[ <= ]]> DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="yyyy != null">
+				and yyyy = #{yyyy}
+			</if>
+			<if test="mm != null and mm != ''">
+				and mm = #{mm}
+			</if>
+			<if test="dd != null">
+				and dd = #{dd}
+			</if>
+			<if test="accOuts != null and accOuts.size() > 0">
+				and acc_out
+				<foreach collection="accOuts" item="item" open="in (" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	<!-- 查询用户总收入 -->
+	<select id="selectIncomeByAccNo" resultType="java.math.BigDecimal" parameterType="com.longfor.gf.lc.account.dao.entity.example.TransactionQuery">
+		select
+		sum(acc_in_amt) total
+		from t_transaction
+		<where>
+			acc_in = #{accNo}
+			and trans_type = '1' and status = '1'
+			<if test="startDate != null and startDate != ''">
+				and DATE_FORMAT(create_time, '%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and DATE_FORMAT(create_time, '%Y-%m-%d') <![CDATA[ <= ]]> DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="yyyy != null">
+				and yyyy = #{yyyy}
+			</if>
+			<if test="mm != null and mm != ''">
+				and mm = #{mm}
+			</if>
+			<if test="dd != null">
+				and dd = #{dd}
+			</if>
+			<if test="batchNo != null and batchNo != ''">
+				and batch_no = #{batchNo}
+			</if>
+		</where>
+	</select>
+	<!-- 查询用户总支出 -->
+	<select id="selectExpendByAccNo" resultType="java.math.BigDecimal" parameterType="com.longfor.gf.lc.account.dao.entity.example.TransactionQuery">
+		select
+		sum(acc_out_amt) total
+		from t_transaction
+		<where>
+			acc_out = #{accNo}
+			and trans_type = '1' and status = '1'
+			<if test="startDate != null and startDate != ''">
+				and DATE_FORMAT(create_time, '%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and DATE_FORMAT(create_time, '%Y-%m-%d') <![CDATA[ <= ]]> DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="yyyy != null">
+				and yyyy = #{yyyy}
+			</if>
+			<if test="mm != null and mm != ''">
+				and mm = #{mm}
+			</if>
+			<if test="dd != null">
+				and dd = #{dd}
+			</if>
+			<if test="batchNo != null and batchNo != ''">
+				and batch_no = #{batchNo}
+			</if>
+		</where>
+	</select>
+	<!-- 根据条件查询交易明细 -->
+	<select id="redPacketsByAccNo" resultMap="TransDtoResultMap" parameterType="com.longfor.gf.lc.account.dao.entity.example.TransactionQuery">
+		select t3.batch_no, t3.trans_no, t3.acc_out, t3.acc_out_amt, t3.acc_in,t3.acc_in_amt,
+		t3.business_type,t3.trans_type, t3.status, t3.remarks, t3.create_time, t3.transWay
+		from (
+			select t1.batch_no, t1.trans_no, t1.acc_out, t1.acc_out_amt, t1.acc_in, t1.acc_in_amt,
+			t1.business_type,t1.trans_type, t1.status, t1.remarks, t1.create_time, '2' transWay
+			from t_transaction t1
+			where t1.acc_out=#{accNo}
+			and t1.business_type in('101000','101001')
+			<if test="startDate != null and startDate != ''">
+				and DATE_FORMAT(t1.create_time, '%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and DATE_FORMAT(t1.create_time, '%Y-%m-%d') <![CDATA[ <= ]]> DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="yyyy != null">
+				and t1.yyyy = #{yyyy}
+			</if>
+			<if test="mm != null and mm != ''">
+				and t1.mm = #{mm}
+			</if>
+			<if test="dd != null">
+				and t1.dd = #{dd}
+			</if>
+			union
+			select t2.batch_no, t2.trans_no, t2.acc_out, t2.acc_out_amt, t2.acc_in, t2.acc_in_amt, t2.business_type,t2.trans_type,
+			t2.status, t2.remarks, t2.create_time, '1' transWay
+			from t_transaction t2
+			where t2.acc_in=#{accNo}
+			and t2.business_type='102000'
+			<if test="startDate != null and startDate != ''">
+				and DATE_FORMAT(t2.create_time, '%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and DATE_FORMAT(t2.create_time, '%Y-%m-%d') <![CDATA[ <= ]]> DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="yyyy != null">
+				and t2.yyyy = #{yyyy}
+			</if>
+			<if test="mm != null and mm != ''">
+				and t2.mm = #{mm}
+			</if>
+			<if test="dd != null">
+				and t2.dd = #{dd}
+			</if>
+		) t3
+		order by t3.create_time desc
+	</select>
+
+	<select id="queryH5TransPage" resultMap="AccTransactionDtoResultMap" parameterType="com.longfor.gf.lc.account.dao.entity.example.TransactionQuery">
+		select
+		t.batch_no, SUM(t.acc_out_amt) amount,  group_concat(t.acc_in) acc_in, t.business_type
+		from t_transaction t
+		<where>
+			<choose>
+				<when test="transWay == null or (transWay != null and transWay == 0)">
+					(t.status = '1' or t.status = '3')
+					and (t.acc_out = #{accNo} or t.acc_in = #{accNo})
+				</when>
+				<when test="transWay != null and transWay == 1">
+					t.status = '1'
+					and t.trans_type != '2'
+					and t.acc_in = #{accNo}
+				</when>
+				<when test="transWay != null and transWay == 2">
+					(t.status = '1' or t.status = '3')
+					and t.trans_type != '3'
+					and t.acc_out = #{accNo}
+				</when>
+			</choose>
+			<include refid="query_h5_where_info" />
+		</where>
+		group by t.business_type, t.batch_no order by t.batch_no desc
+	</select>
+
+	<select id="queryH5TransPageCount" resultType="long" parameterType="com.longfor.gf.lc.account.dao.entity.example.TransactionQuery">
+		select count(1)
+		from (
+			select
+				t.batch_no, SUM(t.acc_out_amt) amount,  group_concat(t.acc_in) acc_in, t.business_type
+			from t_transaction t
+			<where>
+				<choose>
+					<when test="transWay == null or (transWay != null and transWay == 0)">
+						(t.status = '1' or t.status = '3')
+						and (t.acc_out = #{accNo} or t.acc_in = #{accNo})
+					</when>
+					<when test="transWay != null and transWay == 1">
+						t.status = '1'
+						and t.trans_type != '2'
+						and t.acc_in = #{accNo}
+					</when>
+					<when test="transWay != null and transWay == 2">
+						(t.status = '1' or t.status = '3')
+						and t.trans_type != '3'
+						and t.acc_out = #{accNo}
+					</when>
+				</choose>
+				<include refid="query_h5_where_info" />
+			</where>
+			group by t.business_type, t.batch_no
+		) t
+	</select>
+
+	<sql id="query_h5_where_info">
+		<if test="businessType != null and businessType != ''">
+			and t.business_type = #{businessType}
+		</if>
+		<if test="transType != null and transType != ''">
+			and t.trans_type = #{transType}
+		</if>
+		<if test="batchNo != null and batchNo != ''">
+			and t.batch_no = #{batchNo}
+		</if>
+		<if test="transNo != null and transNo != ''">
+			and t.trans_no = #{transNo}
+		</if>
+		<if test="startDate != null and startDate != ''">
+			and DATE_FORMAT(t.create_time, '%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+		</if>
+		<if test="endDate != null and endDate != ''">
+			and DATE_FORMAT(t.create_time, '%Y-%m-%d') <![CDATA[ <= ]]> DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+		</if>
+		<if test="yyyy != null">
+			and t.yyyy = #{yyyy}
+		</if>
+		<if test="mm != null and mm != ''">
+			and t.mm = #{mm}
+		</if>
+		<if test="dd != null">
+			and t.dd = #{dd}
+		</if>
+		and t.key_id not in(select key_id from t_transaction where acc_out = #{accNo} and business_type = '102000')
+	</sql>
+
+	<select id="queryTransByBnoAndBtypeAndAccNo" resultMap="AccTransactionDtoResultMap" >
+		select
+		t.batch_no, t.acc_out, t.remarks, t.create_time,t.trans_type, t.acc_out_amt amount, t.status,
+        (case when t.acc_out = #{accNo} and t.acc_in != #{accNo} then '2'
+        when t.acc_out = #{accNo} and t.acc_in = #{accNo} and (t.business_type = '101001' or t.business_type = '101000')then '2'
+        when t.acc_out = #{accNo} and t.acc_in = #{accNo} and (t.business_type = '102000' or t.business_type = '101003')then '1'
+        when t.acc_out != #{accNo} and t.acc_in = #{accNo} then '1' end) transWay
+		from t_transaction t
+		<where>
+			t.batch_no = #{batchNo}
+			and t.business_type = #{businessType}
+			<choose>
+				<when test="transWay == null or (transWay != null and transWay == 0)">
+					and (t.acc_out = #{accNo} or t.acc_in = #{accNo})
+				</when>
+				<when test="transWay != null and transWay == 1">
+					and t.acc_in = #{accNo}
+                    and (t.acc_out != #{accNo} or t.business_type = '102000' or t.business_type = '101003')
+				</when>
+				<when test="transWay != null and transWay == 2">
+					and t.acc_out = #{accNo}
+                    and (t.acc_in != #{accNo} or t.business_type = '101001' or t.business_type = '101000')
+				</when>
+			</choose>
+		</where>
+		order by t.create_time asc limit 1
+	</select>
+	<!-- 查询参与抢红包用户账号 -->
+	<select id="queryAccInByBnoAndBtype" resultType="java.lang.String" >
+		select
+			group_concat(t.acc_in) acc_in
+		from t_transaction t
+		<where>
+			t.batch_no = #{batchNo}
+			and t.business_type = '102000'
+		</where>
+	</select>
+
+	<!-- 查询已抢红包总金额 -->
+	<select id="selectGrabAmountByAccNo" resultType="java.math.BigDecimal" >
+		select
+		sum(acc_out_amt) total
+		from t_transaction
+		<where>
+			acc_out = #{accNo}
+			and business_type = '102000'
+			and batch_no = #{batchNo}
+		</where>
+	</select>
+
+	<select id="selectH5TransPage" resultMap="TransDtoResultMap" parameterType="com.longfor.gf.lc.account.dao.entity.example.TransactionQuery">
+		select
+		t.key_id, t.batch_no, t.trans_no, t.acc_out, t.acc_out_amt, t.acc_in, t.acc_in_amt, t.business_type,t.trans_type,
+		t.yyyy, t.mm, t.dd, t.status, t.remarks, t.create_time, t.create_user, t.modify_time, t.modify_user,
+        (case when t.acc_out = #{accNo} and t.acc_in != #{accNo} then '2'
+        when t.acc_out = #{accNo} and t.acc_in = #{accNo} and (t.business_type = '101001' or t.business_type = '101000')then '2'
+        when t.acc_out = #{accNo} and t.acc_in = #{accNo} and (t.business_type = '102000' or t.business_type = '101003')then '1'
+        when t.acc_out != #{accNo} and t.acc_in = #{accNo} then '1' end) transWay
+		from t_transaction t
+		<where>
+			t.trans_type = '1' and t.status = '1'
+			<choose>
+				<when test="transWay == null or (transWay != null and transWay == 0)">
+					and (t.acc_out = #{accNo} or t.acc_in = #{accNo})
+				</when>
+				<when test="transWay != null and transWay == 1">
+					and t.acc_in = #{accNo}
+					and (t.acc_out != #{accNo} or t.business_type = '102000' or t.business_type = '101003')
+				</when>
+				<when test="transWay != null and transWay == 2">
+					and t.acc_out = #{accNo}
+                    and (t.acc_in != #{accNo} or t.business_type = '101001' or t.business_type = '101000')
+				</when>
+			</choose>
+			<if test="businessType != null and businessType != ''">
+				and t.business_type = #{businessType}
+			</if>
+			<if test="transType != null and transType != ''">
+				and t.trans_type = #{transType}
+			</if>
+			<if test="batchNo != null and batchNo != ''">
+				and t.batch_no = #{batchNo}
+			</if>
+			<if test="transNo != null and transNo != ''">
+				and t.trans_no = #{transNo}
+			</if>
+			<if test="startDate != null and startDate != ''">
+				and DATE_FORMAT(t.create_time, '%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and DATE_FORMAT(t.create_time, '%Y-%m-%d') <![CDATA[ <= ]]> DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="yyyy != null">
+				and t.yyyy = #{yyyy}
+			</if>
+			<if test="mm != null and mm != ''">
+				and t.mm = #{mm}
+			</if>
+			<if test="dd != null">
+				and t.dd = #{dd}
+			</if>
+		</where>
+		order by t.create_time desc
+	</select>
+
+
+	<select id="queryUserIncome" resultType="java.math.BigDecimal"  parameterType="com.longfor.gf.lc.account.dao.entity.example.TransactionQuery">
+		select
+		 SUM(t.acc_in_amt) amount
+		from t_transaction t
+		<where>
+			t.status = '1'
+			and t.trans_type != '2'
+			and t.acc_in = #{accNo}
+			<include refid="query_h5_where_info" />
+		</where>
+	</select>
+
+	<select id="queryUserExpend" resultType="java.math.BigDecimal"  parameterType="com.longfor.gf.lc.account.dao.entity.example.TransactionQuery">
+		select
+		SUM(t.acc_out_amt) amount
+		from t_transaction t
+		<where>
+			(t.status = '1' or t.status = '3')
+			and t.trans_type != '3'
+			and t.acc_out = #{accNo}
+			<include refid="query_h5_where_info" />
+		</where>
+	</select>
+
+</mapper>

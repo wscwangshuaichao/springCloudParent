@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longfor.gf.lc.account.dao.SequenceMapper">
+
+    <insert id="init" parameterType="com.longfor.gf.lc.account.dao.entity.Sequence">
+		insert into t_sequence
+		(
+			seq_code,
+			seq_name,
+			cur_value,
+			incr_value,
+			create_time,
+			create_user,
+			modify_time,
+			modify_user
+		)
+		values(
+			#{seqCode},
+			#{seqName},
+			#{curValue},
+			#{incrValue},
+			now(),
+			#{createUser},
+			now(),
+			#{modifyUser}
+		)
+	</insert>
+
+	<update id="incrValue" parameterType="String">
+		update t_sequence
+		set
+			cur_value = cur_value + incr_value,
+			modify_time = now()
+		where seq_code = #{seqCode}
+	</update>
+
+	<select id="selectSequenceBySeqCode" resultType="com.longfor.gf.lc.account.dao.entity.Sequence">
+		select
+			key_id keyId,
+			seq_code seqCode,
+			seq_name seqName,
+			cur_value curValue,
+			incr_value incrValue
+		from t_sequence
+		where seq_code = #{seqCode}
+		limit 1
+	</select>
+
+	<select id="getTrxNo" resultType="String">
+		select concat('TN',replace(current_timestamp(3)+0,'.',''),substring(convert(rand(),char),3,5))
+	</select>
+
+	<select id="getBatchNo" resultType="String">
+		select concat('BN',replace(current_timestamp(3)+0,'.',''),substring(convert(rand(),char),3,3))
+	</select>
+
+</mapper>

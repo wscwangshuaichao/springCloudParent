@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longfor.gf.lc.account.dao.ParamaterMapper">
+    <resultMap id="BaseResultMap" type="com.longfor.gf.lc.account.dao.entity.Paramater">
+        <id column="param_id" jdbcType="INTEGER" property="paramId" />
+        <result column="param_name" jdbcType="VARCHAR" property="paramName" />
+        <result column="param_value" jdbcType="VARCHAR" property="paramValue" />
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="modify_user" jdbcType="VARCHAR" property="modifyUser" />
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+        <result column="is_delete" jdbcType="SMALLINT" property="delete" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        param_id, param_name, param_value, parent_id, remark, create_user, create_time, modify_user, modify_time, is_delete
+    </sql>
+
+    <sql id="base_column_info">
+        param_id, param_name, param_value, parent_id, remark
+      </sql>
+    <select id="selectOneByParamValue" resultMap="BaseResultMap">
+		select
+        <include refid="base_column_info" />
+		from t_paramater
+		where is_delete = 0 and param_value = #{paramValue}
+		limit 1
+	</select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_info" />
+        from t_paramater
+        where is_delete = 0
+        <if test="paramId != null">
+            and param_id = #{paramId,jdbcType=INTEGER}
+        </if>
+        <if test="parentId != null">
+            and parent_id = #{parentId,jdbcType=INTEGER}
+        </if>
+        <if test="paramValue != null and paramValue != ''">
+            and param_value = #{paramValue,jdbcType=VARCHAR}
+        </if>
+    </select>
+</mapper>
