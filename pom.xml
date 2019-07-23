@@ -4,21 +4,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>springCloud.learn.wsc</groupId>
-    <artifactId>cloud-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <packaging>pom</packaging>
-
-    <name>cloud-parent</name>
-    <description>Demo project for Spring Boot</description>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.0.3.RELEASE</version>
         <relativePath/>
     </parent>
+
+    <groupId>springCloud.learn.wsc</groupId>
+    <artifactId>cloud-parent</artifactId>
+    <version>0.0.1.0-SNAPSHOT</version>
+    <!--四级版本号：X.X.X.X
+        前两段是主版本，第三位为冲刺版本，第四位为编译版本；
+        每个产品的主版本都要经过定位、启动、定义、实施和运营5个阶段；-->
+    <name>cloud-parent</name>
+    <packaging>pom</packaging>
+
+    <description>Demo project for Spring Boot</description>
 
     <modules>
         <module>eureka-server</module>
@@ -29,30 +31,99 @@
     </modules>
 
     <properties>
+        <java.version>1.8</java.version>
+
+        <!--thirdparty-->
+        <mysql-connector.version>5.1.47</mysql-connector.version>
+        <com.alibaba.fastjson.version>1.2.56</com.alibaba.fastjson.version>
+        <powermock.version>1.7.1</powermock.version>
+        <opslabJutil.version>1.0.8</opslabJutil.version>
+        <jasypt.version>2.0.0</jasypt.version>
+        <hmily.version>2.0.0-RELEASE</hmily.version>
+        <mybatis.test.version>2.0.1</mybatis.test.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
-        <mybatis-plus-boot-starter.version>3.1.0</mybatis-plus-boot-starter.version>
-        <mybatis-plus-generator>3.1.0</mybatis-plus-generator>
+
         <velocity-engine-core>2.0</velocity-engine-core>
         <hutool.version>4.5.4</hutool.version>
-        <pagehelper.version>5.1.2</pagehelper.version>
         <shiro.version>1.2.3</shiro.version>
         <poi.version>3.9</poi.version>
-        <okhttp3.version>3.8.1</okhttp3.version>
-    </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+        <okhttp3.version>3.8.1</okhttp3.version>
+        <mybatis-boot-starter.version>2.1.0</mybatis-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.1.0</mybatis-plus-boot-starter.version>
+        <mybatis-plus-generator>3.1.0</mybatis-plus-generator>
+
+        <wsc.spring-redis.version>2.1.6.RELEASE</wsc.spring-redis.version>
+
+        <wsc.spring-kafka.version>1.3.5.RELEASE</wsc.spring-kafka.version>
+        <wsc.spring-boot.version>2.0.3.RELEASE</wsc.spring-boot.version>
+
+        <commons-lang3.version>3.5</commons-lang3.version>
+        <janino.version>2.7.8</janino.version>
+        <podam.version>7.2.0.RELEASE</podam.version>
+
+        <!-- compile -->
+        <mapstruct.version>1.2.0.Final</mapstruct.version>
+        <lombok.version>1.18.2</lombok.version>
+
+        <!-- database -->
+        <mapper.version>4.0.4</mapper.version>
+        <pagehelper.version>5.1.2</pagehelper.version>
+        <wsc.mybatis-spring-boot.version>2.1.0</wsc.mybatis-spring-boot.version>
+        <druid.version>1.1.10</druid.version>
+        <hmily.version>2.0.0-RELEASE</hmily.version>
+        <h2.version>1.4.192</h2.version>
+
+    </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.9</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-httpclient</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity-engine-core}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -60,16 +131,261 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${wsc.spring-redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${wsc.mybatis-spring-boot.version}</version>
+            </dependency>
+            <!--任务调度-->
+            <dependency>
+                <groupId>com.longfor.gaia.gfs</groupId>
+                <artifactId>gaia-gfs-web-xxljob</artifactId>
+                <version>${gfs.version}</version>
+            </dependency>
+
+            <!--规则引擎-->
+            <dependency>
+                <groupId>com.longfor.gf.drools</groupId>
+                <artifactId>gf-drools-spring-boot-starter</artifactId>
+                <version>${gf-drools-spring-boot-starter.version}</version>
+            </dependency>
+
+            <!--third party-->
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${com.alibaba.fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.0opslab</groupId>
+                <artifactId>opslabJutil</artifactId>
+                <version>${opslabJutil.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${wsc.spring-kafka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${jasypt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.dromara</groupId>
+                <artifactId>hmily-spring-boot-starter-springcloud</artifactId>
+                <version>${hmily.version}</version>
+            </dependency>
+
+            <!--test-->
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-api-mockito</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter-test -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter-test</artifactId>
+                <version>${mybatis.test.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- HuTool工具包 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <!--third party-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.0opslab</groupId>
+            <artifactId>opslabJutil</artifactId>
+        </dependency>
+
+        <!-- test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>5.1</version>
+        </dependency>
+
+    </dependencies>
+
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/classes</outputDirectory>
+                            <useDefaultDelimiters>false</useDefaultDelimiters>
+                            <delimiters>
+                                <delimiter>#</delimiter>
+                            </delimiters>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>application.properties</include>
+                                        <include>application.yml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <!--开发环境-->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <apolloMeta>http://apolloconfig.longfor.sit</apolloMeta>
+                <apolloCluster>dev</apolloCluster>
+            </properties>
+        </profile>
+        <!-- 集成环境 -->
+        <profile>
+            <id>sit</id>
+            <properties>
+                <apolloMeta>http://apolloconfig.longfor.sit</apolloMeta>
+                <apolloCluster>sit</apolloCluster>
+            </properties>
+        </profile>
+        <!-- UAT环境 -->
+        <profile>
+            <id>uat</id>
+            <properties>
+                <apolloMeta>http://apolloconfig.longfor.sit</apolloMeta>
+                <apolloCluster>uat</apolloCluster>
+            </properties>
+        </profile>
+        <!-- 生产环境 -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <apolloMeta>https://apolloconfig.longhu.net</apolloMeta>
+                <apolloCluster>prod</apolloCluster>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

@@ -5,7 +5,7 @@
     <parent>
         <groupId>springCloud.learn.wsc</groupId>
         <artifactId>cloud-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.0.1.0-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>springCloud.learn.wsc</groupId>
