@@ -52,7 +52,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.longfor.gf.lc.op.endpoint.GfLcOpEndpointApplication</mainClass>
+                    <mainClass>springcloud.learn.wsc.servicehi.ServiceHiApplication</mainClass>
                 </configuration>
             </plugin>
 
