@@ -1,7 +1,5 @@
 package springcloud.learn.wsc.servicehi.config;
 
-import com.longfor.gf.lc.op.endpoint.service.IAdministratorsService;
-import com.longfor.gf.lc.op.endpoint.service.IOpAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
