@@ -1,2 +1,2 @@
-# springCloudLearn
-自己研究的cloud项目
+# springCloudParent
+工程的父模块
