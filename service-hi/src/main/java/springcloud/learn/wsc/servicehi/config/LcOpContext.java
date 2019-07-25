@@ -6,8 +6,6 @@ import java.util.Map;
 
 /**
 * @ClassName: LcOpContext.java
-* @Description: 龙币管理后台上下文
-* @author: ChongLi
 * @date: 2019/5/23 1:46
 * @version V1.0
 */

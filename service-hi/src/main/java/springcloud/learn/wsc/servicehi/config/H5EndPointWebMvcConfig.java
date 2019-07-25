@@ -1,10 +1,10 @@
 package springcloud.learn.wsc.servicehi.config;
 
-import com.longfor.gf.lc.h5.endpoint.interceptor.H5EndPointInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import springcloud.learn.wsc.servicehi.interceptor.H5EndPointInterceptor;
 
 /**
  * @author zhangjianbing

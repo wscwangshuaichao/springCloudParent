@@ -17,9 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author guoguangxiao
- * @date 2019/6/18 17:43:53
- */
+ * @Author wangshuaichao
+ * @Description //TODO
+ * @Date 17:14 2019/7/24
+ * @Param 
+ * @return 
+ * @throws        
+ **/
 @Configuration
 public class FeignConfig {
 

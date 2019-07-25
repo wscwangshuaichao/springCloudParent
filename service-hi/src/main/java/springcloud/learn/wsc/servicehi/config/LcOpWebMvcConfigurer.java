@@ -9,7 +9,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 /**
 * @ClassName: LcOpWebMvcConfigurer.java
 * @Description: 配置
-* @author: ChongLi
 * @date: 2019/5/24 13:08
 * @version V1.0
 */

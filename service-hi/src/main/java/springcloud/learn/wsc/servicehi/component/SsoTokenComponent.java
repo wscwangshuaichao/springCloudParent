@@ -4,12 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
-* @ClassName: SsoTokenComponent.java
-* @Description: sso验证登陆组件
-* @author: ChongLi
-* @date: 2019/6/4 1:56
-* @version V1.0
-*/
+ * @Author wangshuaichao
+ * @Description //TODO
+ * @Date 17:20 2019/7/24
+ * @Param 
+ * @return 
+ * @throws        
+ **/
 @Slf4j
 @Component
 public class SsoTokenComponent {

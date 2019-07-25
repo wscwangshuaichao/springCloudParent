@@ -15,7 +15,6 @@ import java.util.Map;
 /**
 * @ClassName: LcOpHandlerInterceptor2.java
 * @Description: 全局拦截器
-* @author: ChongLi
 * @date: 2019/5/28 2:10
 * @version V1.0
 */

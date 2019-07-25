@@ -1,7 +1,5 @@
 package springcloud.learn.wsc.servicehi.config;
 
-import com.longfor.gaia.gfs.data.redis.DynamicRedisProvider;
-import com.longfor.gaia.gfs.data.redis.JacksonSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;

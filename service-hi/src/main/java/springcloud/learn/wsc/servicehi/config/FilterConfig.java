@@ -3,12 +3,13 @@ package springcloud.learn.wsc.servicehi.config;
 import org.springframework.context.annotation.Configuration;
 
 /**
-* @ClassName: FilterConfig.java
-* @Description: 过滤器配置
-* @author: ChongLi
-* @date: 2019/5/24 12:55
-* @version V1.0
-*/
+ * @Author wangshuaichao
+ * @Description //TODO
+ * @Date 17:28 2019/7/24
+ * @Param
+ * @return
+ * @throws
+ **/
 @Configuration
 public class FilterConfig {
 //    @Bean
@@ -23,7 +24,6 @@ public class FilterConfig {
 
 //    /**
 //    * @description: 第二种：过滤器跨域配置
-//    * @author: ChongLi
 //    * @date: 2019/5/24 13:47
 //    */
 //    @Bean

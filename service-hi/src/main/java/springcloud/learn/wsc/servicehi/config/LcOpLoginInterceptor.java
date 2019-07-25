@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
 * @ClassName: LcOpLoginInterceptor.java
 * @Description: 登陆拦截器
-* @author: ChongLi
 * @date: 2019/5/22 18:50
 * @version V1.0
 */
